@@ -51,10 +51,6 @@ async def on_message(message: discord.Message) -> None:
         if att.content_type and att.content_type.startswith('image/')
     ]
 
-    if len(img_urls) > settings.MAX_IMAGE_PER_REQUEST:
-        await message.channel.send(f'一次最多只能處理 {settings.MAX_IMAGE_PER_REQUEST} 張圖片喔！')
-        return
-
     if (ref := message.reference) and (ref_message_id := ref.message_id):
         try:
             ref_msg = await message.channel.fetch_message(ref_message_id)
@@ -63,6 +59,10 @@ async def on_message(message: discord.Message) -> None:
                     img_urls.append(att.url)
         except Exception as e:
             logger.warning('Cannot fetch reference message: %s', e)
+
+    if len(img_urls) > settings.MAX_IMAGE_PER_REQUEST:
+        await message.channel.send(f'一次最多只能處理 {settings.MAX_IMAGE_PER_REQUEST} 張圖片喔！')
+        return
 
     logger.info(
         'Receive message from %s: Content="%s", Images=%d',
