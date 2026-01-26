@@ -62,7 +62,7 @@ async def on_message(message: discord.Message) -> None:
                 if att.content_type and att.content_type.startswith('image/'):
                     img_urls.append(att.url)
         except Exception as e:
-            logger.warning('無法取得引用訊息: %s', e)
+            logger.warning('Cannot fetch reference message: %s', e)
 
     logger.info(
         'Receive message from %s: Content="%s", Images=%d',
@@ -73,7 +73,7 @@ async def on_message(message: discord.Message) -> None:
 
     pil_images = []
     if img_urls:
-        logger.info('正在下載 %d 張圖片...', len(img_urls))
+        logger.info('Downloading %d images...', len(img_urls))
         pil_images = await asyncio.gather(*map(utils.download_image, img_urls))
 
     async with message.channel.typing():
@@ -86,7 +86,7 @@ async def on_message(message: discord.Message) -> None:
             await utils.respond(message.reply, resp_text, resp_image)
 
         except Exception as e:
-            logger.exception('生成過程中發生錯誤')
+            logger.exception('Error occurred during generation:')
             await message.channel.send(f'發生錯誤: {e}')
 
 
