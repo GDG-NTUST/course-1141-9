@@ -69,10 +69,7 @@ async def main() -> None:
         msg = 'API key is required.'
         raise ValueError(msg)
 
-    if not (prompt := args.prompt):
-        msg = 'Prompt is required.'
-        raise ValueError(msg)
-
+    prompt = args.prompt or ''
     image_paths = args.image or []
     if image_paths and len(image_paths) > settings.MAX_IMAGE_PER_REQUEST:
         msg = f'Number of input images exceeds the maximum of {settings.MAX_IMAGE_PER_REQUEST}.'
@@ -90,10 +87,14 @@ async def main() -> None:
         model_name=settings.MODEL_NAME,
         system_prompt=settings.SYSTEM_PROMPT,
     )
-    resp_text, resp_image = await nano_banana.generate(
-        prompt=prompt,
-        images=images,
-    )
+    try:
+        resp_text, resp_image = await nano_banana.generate(
+            prompt=prompt,
+            images=images,
+        )
+    except Exception:
+        logger.exception('Error occurred during generation:')
+        return
 
     if not resp_text and not resp_image:
         logger.warning('No response generated from the model.')

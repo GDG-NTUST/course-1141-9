@@ -42,6 +42,9 @@ class NanoBananaClient:
         Otherwise, generates an image from the text prompt.
         """
 
+        if not prompt and not self.system_prompt:
+            self._raise_value_error('Prompt is required.')
+
         contents: list[str | Image.Image | ImageFile.ImageFile] = (
             [self.system_prompt, prompt, *images]
             if images
