@@ -16,6 +16,7 @@ class NanoBananaClient:
         self,
         api_key: str,
         model_name: str,
+        system_prompt: str = '',
     ) -> None:
         if not api_key:
             msg = 'Google API key is required'
@@ -23,6 +24,7 @@ class NanoBananaClient:
 
         self.client = genai.Client(api_key=api_key)
         self.model_name = model_name
+        self.system_prompt = system_prompt
         self.logger = logging.getLogger(__name__)
         self.logger.info(
             'NanoBananaClient initialized with model=%s',
@@ -40,7 +42,11 @@ class NanoBananaClient:
         Otherwise, generates an image from the text prompt.
         """
 
-        contents: list[str | Image.Image | ImageFile.ImageFile] = [prompt, *images] if images else [prompt]
+        contents: list[str | Image.Image | ImageFile.ImageFile] = (
+            [self.system_prompt, prompt, *images]
+            if images
+            else [self.system_prompt, prompt]
+        )
 
         self.logger.info(
             "Sending request to Gemini (Mode: %s)",

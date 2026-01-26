@@ -85,7 +85,11 @@ async def main() -> None:
         with Image.open(p) as img:
             images.append(img.convert('RGB').copy())
 
-    nano_banana = NanoBananaClient(api_key=api_key, model_name=settings.MODEL_NAME)
+    nano_banana = NanoBananaClient(
+        api_key=api_key,
+        model_name=settings.MODEL_NAME,
+        system_prompt=settings.SYSTEM_PROMPT,
+    )
     resp_text, resp_image = await nano_banana.generate(
         prompt=prompt,
         images=images,

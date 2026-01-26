@@ -9,7 +9,7 @@ from nano_banana.discord import utils
 logger = logging.getLogger(__name__)
 settings = Settings()
 banana = NanoBananaClient(
-    api_key=settings.GOOGLE_API_KEY, model_name=settings.MODEL_NAME,
+    api_key=settings.GOOGLE_API_KEY, model_name=settings.MODEL_NAME, system_prompt=settings.SYSTEM_PROMPT
 )
 bot = discord.Bot(
     intents=discord.Intents.all(),
@@ -30,7 +30,7 @@ async def draw(ctx: discord.ApplicationContext, prompt: str) -> None:
     await ctx.defer()
     logger.info('Receive draw command from %s: %s', ctx.author, prompt)
     resp_text, resp_image = await banana.generate(
-        prompt=settings.SYSTEM_PROMPT + '\n' + prompt,
+        prompt=prompt,
     )
 
     await utils.respond(ctx.respond, resp_text, resp_image)
@@ -79,7 +79,7 @@ async def on_message(message: discord.Message) -> None:
     async with message.channel.typing():
         try:
             resp_text, resp_image = await banana.generate(
-                prompt=settings.SYSTEM_PROMPT + '\n' + prompt,
+                prompt=prompt,
                 images=pil_images if pil_images else None,
             )
 
