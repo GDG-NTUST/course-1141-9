@@ -29,14 +29,26 @@ class Settings(BaseSettings):
         datefmt='%Y-%m-%d %H:%M:%S',
     )
 
+    @property
+    def discord_token(self) -> str:
+        if self.DISCORD_TOKEN:
+            return self.DISCORD_TOKEN
+        msg = 'DISCORD_TOKEN is not set'
+        raise ValueError(msg)
+
+    @property
+    def discord_guild_id(self) -> int:
+        if self.DISCORD_GUILD_ID != -1:
+            return self.DISCORD_GUILD_ID
+        msg = 'DISCORD_GUILD_ID is not set'
+        raise ValueError(msg)
+
     def __init__(self) -> None:
         super().__init__()
         logger = logging.getLogger(__name__)
 
-        if not (
-            self.GOOGLE_API_KEY and self.DISCORD_TOKEN and self.DISCORD_GUILD_ID != -1
-        ):
-            msg = 'GOOGLE_API_KEY, DISCORD_TOKEN and DISCORD_GUILD_ID must be set in environment variables.'
+        if not self.GOOGLE_API_KEY:
+            msg = 'GOOGLE_API_KEY must be set in environment variables.'
             logger.error(msg)
             raise ValueError(msg)
 
