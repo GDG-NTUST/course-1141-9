@@ -6,6 +6,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/htmlcov" />
+      <excludeFolder url="file://$MODULE_DIR$/src/htmlcov" />
     </content>
     <orderEntry type="jdk" jdkName="uv (GDG_nano_banana)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

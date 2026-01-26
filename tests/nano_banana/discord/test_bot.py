@@ -1,11 +1,8 @@
 """Tests for Discord bot functionality."""
 
-import io
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import discord
 import pytest
-from PIL import Image
 
 
 @pytest.fixture
