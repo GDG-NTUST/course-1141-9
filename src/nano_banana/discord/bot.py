@@ -39,7 +39,7 @@ async def draw(ctx: discord.ApplicationContext, prompt: str) -> None:
 @bot.listen()
 async def on_message(message: discord.Message) -> None:
     if message.author.bot or (
-        message.guild and message.guild.id != settings.DISCORD_GUILD_ID
+        message.guild and message.guild.id != settings.discord_guild_id
     ):
         return
 
