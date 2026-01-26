@@ -17,7 +17,15 @@ bot = discord.Bot(
 )
 
 
-@bot.slash_command(name='畫圖', description='畫圖給我')
+@bot.slash_command(
+    name='draw',
+    description='draw me a image from prompt',
+    name_localizations={'zh-TW': '畫圖', 'zh-CN': '画图'},
+    description_localizations={
+        'zh-TW': '由提示詞生成一張圖片',
+        'zh-CN': '由提示词生成一张图片',
+    },
+)
 async def draw(ctx: discord.ApplicationContext, prompt: str) -> None:
     await ctx.defer()
     logger.info('Receive draw command from %s: %s', ctx.author, prompt)
