@@ -1,0 +1,45 @@
+[project]
+name = "gdg-course-1141-9"
+version = "1.0"
+description = "GDG Image Generation Tutorial Project"
+requires-python = ">=3.13"
+dependencies = [
+    "google-genai>=1.60.0",
+    "pillow>=12.1.0",
+    "py-cord>=2.7.0",
+    "pydantic-settings>=2.12.0",
+    "httpx>=0.28.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.4",
+    "pytest-asyncio>=0.25.2",
+    "pytest-cov>=6.0.0",
+    "pytest-mock>=3.14.0",
+]
+
+[tool.ruff]
+target-version = "py313"
+fix = true
+select = ["ALL"]
+ignore = ["E501", "Q000", "ARG", "D", "FBT001", "FBT002", "N818", "S101"]
+exclude = ["__init__.py", ".env", ".venv"]
+
+[tool.ruff.lint]
+# Allow minus-sign (U+2212), greek-small-letter-rho (U+03C1), and the asterisk-operator (U+2217),
+# which could be confused for "-", "p", and "*", respectively.
+allowed-confusables = ["（", "）", "，", "！"]
+
+[tool.ruff.pylint]
+max-args = 6
+
+[tool.black]
+line-length = 80
+skip-string-normalization = true
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+[tool.ruff.format]
+quote-style = "single"
