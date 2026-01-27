@@ -138,7 +138,7 @@ pip install uv
 #### 2. 複製專案儲存庫
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/GDG-NTUST/course-1141-9.git
 cd nano-banana
 ```
 

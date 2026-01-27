@@ -148,7 +148,7 @@ and resolver, written in Rust.
 #### 2. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/GDG-NTUST/course-1141-9.git
 cd nano-banana
 ```
 
