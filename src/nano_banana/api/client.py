@@ -3,7 +3,7 @@
 import asyncio
 import io
 import logging
-from typing import NoReturn
+from typing import Never
 
 from google import genai
 from PIL import Image, ImageFile
@@ -91,5 +91,5 @@ class NanoBananaClient:
             return img
 
     @staticmethod
-    def _raise_value_error(msg: str) -> NoReturn:
+    def _raise_value_error(msg: str) -> Never:
         raise ValueError(msg)
