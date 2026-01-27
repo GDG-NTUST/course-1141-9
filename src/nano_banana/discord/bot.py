@@ -54,9 +54,7 @@ async def on_message(message: discord.Message) -> None:
     if (ref := message.reference) and (ref_message_id := ref.message_id):
         try:
             ref_msg = await message.channel.fetch_message(ref_message_id)
-            for att in ref_msg.attachments:
-                if att.content_type and att.content_type.startswith('image/'):
-                    img_urls.append(att.url)
+            img_urls.extend(att.url for att in ref_msg.attachments if att.content_type and att.content_type.startswith('/image'))
         except Exception as e:
             logger.warning('Cannot fetch reference message: %s', e)
 
