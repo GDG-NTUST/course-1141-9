@@ -68,7 +68,9 @@ async def _fetch_reference_images(message: discord.Message) -> list[str]:
 
 
 async def _generate_response(
-    message: discord.Message, prompt: str, pil_images: list
+    message: discord.Message,
+    prompt: str,
+    pil_images: list,
 ) -> None:
     """Generate and send AI response."""
     try:
