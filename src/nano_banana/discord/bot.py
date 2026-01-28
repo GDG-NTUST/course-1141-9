@@ -9,7 +9,9 @@ from nano_banana.discord import utils
 logger = logging.getLogger(__name__)
 settings = Settings()
 banana = NanoBananaClient(
-    api_key=settings.GOOGLE_API_KEY, model_name=settings.MODEL_NAME, system_prompt=settings.SYSTEM_PROMPT
+    api_key=settings.GOOGLE_API_KEY,
+    model_name=settings.MODEL_NAME,
+    system_prompt=settings.SYSTEM_PROMPT,
 )
 bot = discord.Bot(
     intents=discord.Intents.all(),
@@ -36,6 +38,51 @@ async def draw(ctx: discord.ApplicationContext, prompt: str) -> None:
     await utils.respond(ctx.respond, resp_text, resp_image)
 
 
+def _extract_image_urls(message: discord.Message) -> list[str]:
+    """Extract image URLs from message attachments."""
+    return [
+        att.url
+        for att in message.attachments
+        if att.content_type and att.content_type.startswith('/image')
+    ]
+
+
+async def _fetch_reference_images(message: discord.Message) -> list[str]:
+    """Fetch image URLs from the referenced message."""
+    img_urls = []
+    if (ref := message.reference) and (ref_message_id := ref.message_id):
+        try:
+            ref_msg = await message.channel.fetch_message(ref_message_id)
+            img_urls.extend(
+                att.url
+                for att in ref_msg.attachments
+                if att.content_type and att.content_type.startswith('/image')
+            )
+        except discord.HTTPException as e:
+            logger.warning('Cannot fetch reference message: %s', e)
+            await message.channel.send(f'發生錯誤: {e}')
+        except Exception as e:
+            logger.exception('Unexpected error occurred:')
+            await message.channel.send(f'發生未預期的錯誤: {e}')
+    return img_urls
+
+
+async def _generate_response(message: discord.Message, prompt: str, pil_images: list) -> None:
+    """Generate and send AI response."""
+    try:
+        resp_text, resp_image = await banana.generate(
+            prompt=prompt,
+            images=pil_images if pil_images else None,
+        )
+        await utils.respond(message.reply, resp_text, resp_image)
+    except (discord.HTTPException, ValueError, RuntimeError) as e:
+        logger.exception('Error occurred during generation:')
+        await message.channel.send(f'發生錯誤: {e}')
+    except Exception as e:
+        logger.exception('Unexpected error occurred:')
+        await message.channel.send(f'發生未預期的錯誤: {e}')
+
+
 @bot.listen()
 async def on_message(message: discord.Message) -> None:
     if message.author.bot or (
@@ -44,22 +91,13 @@ async def on_message(message: discord.Message) -> None:
         return
 
     prompt = message.content or ''
-
-    img_urls = [
-        att.url
-        for att in message.attachments
-        if att.content_type and att.content_type.startswith('/image')
-    ]
-
-    if (ref := message.reference) and (ref_message_id := ref.message_id):
-        try:
-            ref_msg = await message.channel.fetch_message(ref_message_id)
-            img_urls.extend(att.url for att in ref_msg.attachments if att.content_type and att.content_type.startswith('/image'))
-        except Exception as e:
-            logger.warning('Cannot fetch reference message: %s', e)
+    img_urls = _extract_image_urls(message)
+    img_urls.extend(await _fetch_reference_images(message))
 
     if len(img_urls) > settings.MAX_IMAGE_PER_REQUEST:
-        await message.channel.send(f'一次最多只能處理 {settings.MAX_IMAGE_PER_REQUEST} 張圖片喔！')
+        await message.channel.send(
+            f'一次最多只能處理 {settings.MAX_IMAGE_PER_REQUEST} 張圖片喔！',
+        )
         return
 
     logger.info(
@@ -75,17 +113,7 @@ async def on_message(message: discord.Message) -> None:
         pil_images = await asyncio.gather(*map(utils.download_image, img_urls))
 
     async with message.channel.typing():
-        try:
-            resp_text, resp_image = await banana.generate(
-                prompt=prompt,
-                images=pil_images if pil_images else None,
-            )
-
-            await utils.respond(message.reply, resp_text, resp_image)
-
-        except Exception as e:
-            logger.exception('Error occurred during generation:')
-            await message.channel.send(f'發生錯誤: {e}')
+        await _generate_response(message, prompt, pil_images)
 
 
 @bot.listen(once=True)
