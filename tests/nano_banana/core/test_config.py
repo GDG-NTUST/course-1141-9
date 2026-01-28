@@ -4,7 +4,7 @@ import logging
 
 import pytest
 
-from src.nano_banana.core.config import Settings
+from nano_banana.core.config import Settings
 
 
 class TestSettings:

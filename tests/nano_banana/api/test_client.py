@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 from PIL import Image
 
-from src.nano_banana.api.client import NanoBananaClient
+from nano_banana.api.client import NanoBananaClient
 
 
 class TestNanoBananaClient:

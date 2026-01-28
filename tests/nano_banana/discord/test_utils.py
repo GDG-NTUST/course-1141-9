@@ -7,7 +7,7 @@ import httpx
 import pytest
 from PIL import Image, UnidentifiedImageError
 
-from src.nano_banana.discord.utils import download_image
+from nano_banana.discord.utils import download_image
 
 
 class TestUtils:
@@ -23,7 +23,7 @@ class TestUtils:
         mock_response.content = sample_image_bytes
 
         with patch(
-            'src.nano_banana.discord.utils.httpx.AsyncClient',
+            'nano_banana.discord.utils.httpx.AsyncClient',
         ) as mock_client:
             mock_client.return_value.__aenter__.return_value.get = AsyncMock(
                 return_value=mock_response,
@@ -38,7 +38,7 @@ class TestUtils:
     async def test_download_image_network_error(self) -> None:
         """Test handling of network errors during download."""
         with patch(
-            'src.nano_banana.discord.utils.httpx.AsyncClient',
+            'nano_banana.discord.utils.httpx.AsyncClient',
         ) as mock_client:
             mock_client.return_value.__aenter__.return_value.get = AsyncMock(
                 side_effect=httpx.HTTPError('Network error'),
@@ -54,7 +54,7 @@ class TestUtils:
         mock_response.content = b'invalid image data'
 
         with patch(
-            'src.nano_banana.discord.utils.httpx.AsyncClient',
+            'nano_banana.discord.utils.httpx.AsyncClient',
         ) as mock_client:
             mock_client.return_value.__aenter__.return_value.get = AsyncMock(
                 return_value=mock_response,
@@ -70,7 +70,7 @@ class TestUtils:
         mock_response.content = b''
 
         with patch(
-            'src.nano_banana.discord.utils.httpx.AsyncClient',
+            'nano_banana.discord.utils.httpx.AsyncClient',
         ) as mock_client:
             mock_client.return_value.__aenter__.return_value.get = AsyncMock(
                 return_value=mock_response,
@@ -95,7 +95,7 @@ class TestUtils:
         mock_response.content = png_bytes
 
         with patch(
-            'src.nano_banana.discord.utils.httpx.AsyncClient',
+            'nano_banana.discord.utils.httpx.AsyncClient',
         ) as mock_client:
             mock_client.return_value.__aenter__.return_value.get = AsyncMock(
                 return_value=mock_response,
@@ -112,7 +112,7 @@ class TestUtils:
         mock_response.content = jpeg_bytes
 
         with patch(
-            'src.nano_banana.discord.utils.httpx.AsyncClient',
+            'nano_banana.discord.utils.httpx.AsyncClient',
         ) as mock_client:
             mock_client.return_value.__aenter__.return_value.get = AsyncMock(
                 return_value=mock_response,
