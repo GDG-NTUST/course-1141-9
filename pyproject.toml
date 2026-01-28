@@ -34,5 +34,8 @@ allowed-confusables = ["（", "）", "，", "！"]
 pylint.max-args = 6
 mccabe.max-complexity = 10
 
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S105", "S106", "S107", "PLR2004", "SLF001", "ANN001", "ANN201", "SIM117"]
+
 [tool.ruff.format]
 quote-style = "single"

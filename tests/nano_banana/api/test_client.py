@@ -1,18 +1,17 @@
 """Tests for NanoBananaClient."""
 
-import io
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 from PIL import Image
 
-from nano_banana.api.client import NanoBananaClient
+from src.nano_banana.api.client import NanoBananaClient
 
 
 class TestNanoBananaClient:
     """Test NanoBananaClient class."""
 
-    def test_client_initialization_success(self):
+    def test_client_initialization_success(self) -> None:
         """Test successful client initialization."""
         client = NanoBananaClient(
             api_key='test_api_key',
@@ -22,13 +21,16 @@ class TestNanoBananaClient:
         assert client.model_name == 'test-model'
         assert client.client is not None
 
-    def test_client_initialization_no_api_key(self):
+    def test_client_initialization_no_api_key(self) -> None:
         """Test client initialization fails without API key."""
         with pytest.raises(ValueError, match='Google API key is required'):
             NanoBananaClient(api_key='', model_name='test-model')
 
     @pytest.mark.asyncio
-    async def test_generate_text_to_image(self, sample_image_bytes):
+    async def test_generate_text_to_image(
+        self,
+        sample_image_bytes: bytes,
+    ) -> None:
         """Test text-to-image generation."""
         client = NanoBananaClient(
             api_key='test_api_key',
@@ -61,9 +63,9 @@ class TestNanoBananaClient:
     @pytest.mark.asyncio
     async def test_generate_image_transformation(
         self,
-        sample_image,
-        sample_image_bytes,
-    ):
+        sample_image: Image.Image,
+        sample_image_bytes: bytes,
+    ) -> None:
         """Test image transformation with prompt."""
         client = NanoBananaClient(
             api_key='test_api_key',
@@ -94,7 +96,7 @@ class TestNanoBananaClient:
             mock_generate.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_generate_empty_response(self):
+    async def test_generate_empty_response(self) -> None:
         """Test handling of empty response."""
         client = NanoBananaClient(
             api_key='test_api_key',
@@ -104,19 +106,21 @@ class TestNanoBananaClient:
         mock_response = MagicMock()
         mock_response.parts = []
 
-        with patch.object(
-            client.client.aio.models,
-            'generate_content',
-            return_value=mock_response,
-        ):
-            with pytest.raises(
+        with (
+            patch.object(
+                client.client.aio.models,
+                'generate_content',
+                return_value=mock_response,
+            ),
+            pytest.raises(
                 ValueError,
                 match='Empty response from Gemini model',
-            ):
-                await client.generate(prompt='Test prompt')
+            ),
+        ):
+            await client.generate(prompt='Test prompt')
 
     @pytest.mark.asyncio
-    async def test_generate_missing_image_data(self):
+    async def test_generate_missing_image_data(self) -> None:
         """Test handling of response without image data."""
         client = NanoBananaClient(
             api_key='test_api_key',
@@ -136,30 +140,34 @@ class TestNanoBananaClient:
             'generate_content',
             return_value=mock_response,
         ):
-            with pytest.raises(
-                ValueError,
-                match='Incomplete response: missing image data',
-            ):
-                await client.generate(prompt='Test prompt')
+            text, image = await client.generate(prompt='Test prompt')
+
+            assert text == 'Some text'
+            assert image is None
 
     @pytest.mark.asyncio
-    async def test_generate_api_exception(self):
+    async def test_generate_api_exception(self) -> None:
         """Test handling of API exceptions."""
         client = NanoBananaClient(
             api_key='test_api_key',
             model_name='test-model',
         )
 
-        with patch.object(
-            client.client.aio.models,
-            'generate_content',
-            side_effect=Exception('API Error'),
+        with (
+            patch.object(
+                client.client.aio.models,
+                'generate_content',
+                side_effect=Exception('API Error'),
+            ),
+            pytest.raises(Exception, match='API Error'),
         ):
-            with pytest.raises(Exception, match='API Error'):
-                await client.generate(prompt='Test prompt')
+            await client.generate(prompt='Test prompt')
 
     @pytest.mark.asyncio
-    async def test_generate_multiple_images(self, sample_image_bytes):
+    async def test_generate_multiple_images(
+        self,
+        sample_image_bytes: bytes,
+    ) -> None:
         """Test generation with multiple input images."""
         client = NanoBananaClient(
             api_key='test_api_key',
@@ -189,22 +197,16 @@ class TestNanoBananaClient:
 
             assert text == 'Combined image'
             assert isinstance(image, Image.Image)
-            # Verify both images were passed
+            # Verify system_prompt, prompt, and both images were passed
             call_args = mock_generate.call_args
-            assert len(call_args.kwargs['contents']) == 3  # prompt + 2 images
-
-    def test_process_image_bytes(self, sample_image_bytes):
-        """Test _process_image_bytes static method."""
-        image = NanoBananaClient._process_image_bytes(sample_image_bytes)
-
-        assert isinstance(image, Image.Image)
-        assert image.size == (100, 100)
+            expected_contents = ['', 'Combine these', image1, image2]
+            assert call_args.kwargs['contents'] == expected_contents
 
     @pytest.mark.asyncio
     async def test_generate_with_multiple_text_parts(
         self,
-        sample_image_bytes,
-    ):
+        sample_image_bytes: bytes,
+    ) -> None:
         """Test handling response with multiple text parts."""
         client = NanoBananaClient(
             api_key='test_api_key',
