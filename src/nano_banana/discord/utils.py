@@ -11,7 +11,12 @@ async def download_image(url: str) -> Image.Image:
         resp = await client.get(url)
         return Image.open(io.BytesIO(resp.content))
 
-async def respond(func: Callable[..., Awaitable], text: str, image: Image.Image | None) -> None:
+
+async def respond(
+    func: Callable[..., Awaitable],
+    text: str,
+    image: Image.Image | None,
+) -> None:
     if not text and not image:
         await func('我不知道該說什麼')
         return
