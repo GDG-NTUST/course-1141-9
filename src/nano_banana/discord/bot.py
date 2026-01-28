@@ -48,7 +48,7 @@ def _extract_image_urls(message: discord.Message) -> list[str]:
 
 
 async def _fetch_reference_images(message: discord.Message) -> list[str]:
-    """Fetch image URLs from referenced message."""
+    """Fetch image URLs from the referenced message."""
     img_urls = []
     if (ref := message.reference) and (ref_message_id := ref.message_id):
         try:
