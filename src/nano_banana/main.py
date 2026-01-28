@@ -1,3 +1,5 @@
+#!/usr/bin/env -S uv run
+
 """Entry point for the GDG tutorial application."""
 
 from nano_banana.core.config import Settings

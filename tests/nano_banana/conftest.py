@@ -1,6 +1,6 @@
 """Pytest configuration and shared fixtures."""
 
-import os
+import io
 from pathlib import Path
 from unittest.mock import MagicMock
 
@@ -9,7 +9,7 @@ from PIL import Image
 
 
 @pytest.fixture
-def mock_env_vars(monkeypatch):
+def mock_env_vars(monkeypatch: pytest.MonkeyPatch) -> None:
     """Mock environment variables for testing."""
     monkeypatch.setenv('GOOGLE_API_KEY', 'test_google_api_key')
     monkeypatch.setenv('DISCORD_TOKEN', 'test_discord_token')
@@ -20,16 +20,14 @@ def mock_env_vars(monkeypatch):
 
 
 @pytest.fixture
-def sample_image():
+def sample_image() -> Image.Image:
     """Create a sample PIL image for testing."""
-    img = Image.new('RGB', (100, 100), color='red')
-    return img
+    return Image.new('RGB', (100, 100), color='red')
 
 
 @pytest.fixture
-def sample_image_bytes(sample_image):
+def sample_image_bytes(sample_image: Image.Image) -> bytes:
     """Convert sample image to bytes."""
-    import io
 
     buffer = io.BytesIO()
     sample_image.save(buffer, format='PNG')
@@ -38,22 +36,21 @@ def sample_image_bytes(sample_image):
 
 
 @pytest.fixture
-def temp_image_path(tmp_path, sample_image):
+def temp_image_path(tmp_path: Path, sample_image: Image.Image) -> str:
     """Create a temporary image file."""
     image_path = tmp_path / 'test_image.png'
     sample_image.save(image_path)
-    return image_path
+    return str(image_path)
 
 
 @pytest.fixture
-def mock_genai_client():
+def mock_genai_client() -> MagicMock:
     """Mock Google GenAI client."""
-    mock_client = MagicMock()
-    return mock_client
+    return MagicMock()
 
 
 @pytest.fixture
-def mock_discord_context():
+def mock_discord_context() -> MagicMock:
     """Mock Discord application context."""
     mock_ctx = MagicMock()
     mock_ctx.author = MagicMock()
@@ -62,7 +59,7 @@ def mock_discord_context():
 
 
 @pytest.fixture
-def mock_discord_message():
+def mock_discord_message() -> MagicMock:
     """Mock Discord message."""
     mock_msg = MagicMock()
     mock_msg.author = MagicMock()

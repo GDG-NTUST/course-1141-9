@@ -1,3 +1,5 @@
+#!/usr/bin/env -S uv run
+
 import argparse
 import asyncio
 import uuid
@@ -107,6 +109,7 @@ async def main() -> None:
         resp_image.save(output_path)
         logger.info('Generated image saved to: %s', output_path)
         resp_image.show()
+
 
 if __name__ == '__main__':
     asyncio.run(main())
