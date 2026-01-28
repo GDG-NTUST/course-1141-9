@@ -110,5 +110,6 @@ async def main() -> None:
         logger.info('Generated image saved to: %s', output_path)
         resp_image.show()
 
+
 if __name__ == '__main__':
     asyncio.run(main())

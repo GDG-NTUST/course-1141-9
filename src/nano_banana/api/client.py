@@ -52,8 +52,8 @@ class NanoBananaClient:
         )
 
         self.logger.info(
-            "Sending request to Gemini (Mode: %s)",
-            "Image Transform" if images else "Text to Image",
+            'Sending request to Gemini (Mode: %s)',
+            'Image Transform' if images else 'Text to Image',
         )
         try:
             response = await self.client.aio.models.generate_content(
