@@ -48,7 +48,7 @@ async def on_message(message: discord.Message) -> None:
     img_urls = [
         att.url
         for att in message.attachments
-        if att.content_type and att.content_type.startswith('image/')
+        if att.content_type and att.content_type.startswith('/image')
     ]
 
     if (ref := message.reference) and (ref_message_id := ref.message_id):
