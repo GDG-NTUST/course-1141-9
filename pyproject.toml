@@ -9,6 +9,7 @@ dependencies = [
     "py-cord>=2.7.0",
     "pydantic-settings>=2.12.0",
     "httpx>=0.28.1",
+    "ruff>=0.14.14"
 ]
 
 [project.optional-dependencies]
@@ -37,6 +38,11 @@ max-args = 6
 [tool.black]
 line-length = 80
 skip-string-normalization = true
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.14",
+]
 
 [tool.ruff.mccabe]
 max-complexity = 10
