@@ -17,7 +17,7 @@ def run_command(cmd: list[str]) -> int:
     return result.returncode
 
 
-def main():
+def main() -> int:
     """Run different test configurations based on command line argument."""
     if len(sys.argv) < 2:
         logger.debug('Usage: python run_tests.py [all|fast|coverage|specific]')
