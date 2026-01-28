@@ -22,7 +22,7 @@ dev = [
 ]
 
 [tool.ruff]
-exclude = ["__init__.py", ".env", ".venv"]
+exclude = ["__init__.py", ".env", ".venv", "*.ipynb"]
 fix = true
 line-length = 80
 target-version = "py313"
