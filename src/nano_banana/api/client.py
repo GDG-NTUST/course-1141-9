@@ -70,7 +70,7 @@ class NanoBananaClient:
                 if part.text:
                     resp_texts.append(part.text)
 
-                if (part.inline_data) and (image_bytes := part.inline_data.data):
+                if part.inline_data and (image_bytes := part.inline_data.data):
                     resp_image = await asyncio.to_thread(
                         self._bytes_to_pil,
                         image_bytes,
