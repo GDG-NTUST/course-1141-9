@@ -43,7 +43,7 @@ def _extract_image_urls(message: discord.Message) -> list[str]:
     return [
         att.url
         for att in message.attachments
-        if att.content_type and att.content_type.startswith('/image')
+        if att.content_type and att.content_type.startswith('image/')
     ]
 
 
@@ -56,7 +56,7 @@ async def _fetch_reference_images(message: discord.Message) -> list[str]:
             img_urls.extend(
                 att.url
                 for att in ref_msg.attachments
-                if att.content_type and att.content_type.startswith('/image')
+                if att.content_type and att.content_type.startswith('image/')
             )
         except discord.HTTPException as e:
             logger.warning('Cannot fetch reference message: %s', e)
