@@ -60,11 +60,11 @@ class TestExtractImageUrls:
         """Test extracting URLs from message with image attachments."""
         mock_attachment_1 = MagicMock()
         mock_attachment_1.url = 'https://example.com/image1.png'
-        mock_attachment_1.content_type = '/image/png'
+        mock_attachment_1.content_type = 'image/png'
 
         mock_attachment_2 = MagicMock()
         mock_attachment_2.url = 'https://example.com/image2.jpg'
-        mock_attachment_2.content_type = '/image/jpeg'
+        mock_attachment_2.content_type = 'image/jpeg'
 
         mock_message = MagicMock()
         mock_message.attachments = [mock_attachment_1, mock_attachment_2]
@@ -95,7 +95,7 @@ class TestExtractImageUrls:
 
         mock_attachment_2 = MagicMock()
         mock_attachment_2.url = 'https://example.com/image.png'
-        mock_attachment_2.content_type = '/image/png'
+        mock_attachment_2.content_type = 'image/png'
 
         mock_message = MagicMock()
         mock_message.attachments = [mock_attachment_1, mock_attachment_2]
@@ -133,7 +133,7 @@ class TestFetchReferenceImages:
         """Test fetching images from referenced message."""
         mock_ref_attachment = MagicMock()
         mock_ref_attachment.url = 'https://example.com/ref_image.png'
-        mock_ref_attachment.content_type = '/image/png'
+        mock_ref_attachment.content_type = 'image/png'
 
         mock_ref_msg = MagicMock()
         mock_ref_msg.attachments = [mock_ref_attachment]
@@ -490,7 +490,7 @@ class TestOnMessage:
         for i in range(bot_module.settings.MAX_IMAGE_PER_REQUEST + 5):
             mock_att = MagicMock()
             mock_att.url = f'https://example.com/image{i}.png'
-            mock_att.content_type = '/image/png'
+            mock_att.content_type = 'image/png'
             attachments.append(mock_att)
         mock_discord_message.attachments = attachments
         mock_discord_message.reference = None
@@ -547,7 +547,7 @@ class TestOnMessage:
         # Create image attachment
         mock_att = MagicMock()
         mock_att.url = 'https://example.com/image.png'
-        mock_att.content_type = '/image/png'
+        mock_att.content_type = 'image/png'
         mock_discord_message.attachments = [mock_att]
 
         mock_discord_message.channel.typing = MagicMock(
