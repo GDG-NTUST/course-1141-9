@@ -90,6 +90,8 @@ fabric.properties
 
 !.idea/codeStyles
 !.idea/runConfigurations
+!.idea/course-1141-9.iml
+!.idea/modules.xml
 
 ### Linux ###
 *~
