@@ -183,7 +183,7 @@ class TestDemoMain:
                     return_value=mock_output_dir / 'test.png',
                 ),
             ):
-                await demo_module.main()
+                await demo_module.amain()
 
                 mock_client.generate.assert_called_once()
                 call_kwargs = mock_client.generate.call_args.kwargs
@@ -239,7 +239,7 @@ class TestDemoMain:
                     return_value=mock_output_dir / 'test.png',
                 ),
             ):
-                await demo_module.main()
+                await demo_module.amain()
 
                 mock_client.generate.assert_called_once()
                 call_kwargs = mock_client.generate.call_args.kwargs
@@ -301,7 +301,7 @@ class TestDemoMain:
                     return_value=mock_output_dir / 'test.png',
                 ),
             ):
-                await demo_module.main()
+                await demo_module.amain()
 
                 call_kwargs = mock_client.generate.call_args.kwargs
                 assert len(call_kwargs['images']) == img_count
@@ -362,7 +362,7 @@ class TestDemoMain:
                 mock_settings.MODEL_NAME = 'test-model'
                 mock_settings_class.return_value = mock_settings
 
-                await demo_module.main()
+                await demo_module.amain()
 
                 # Verify custom API key was used
                 mock_client_class.assert_called_once()
@@ -400,7 +400,7 @@ class TestDemoMain:
             mock_settings_class.return_value = mock_settings
 
             with pytest.raises(ValueError, match='API key is required'):
-                await demo_module.main()
+                await demo_module.amain()
 
     @pytest.mark.asyncio
     async def test_main_empty_prompt(
@@ -441,7 +441,7 @@ class TestDemoMain:
                     return_value=mock_output_dir / 'test.png',
                 ),
             ):
-                await demo_module.main()
+                await demo_module.amain()
 
                 # Verify generate was called with empty prompt
                 call_kwargs = mock_client.generate.call_args.kwargs

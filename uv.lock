@@ -428,7 +428,7 @@ wheels = [
 [[package]]
 name = "gdg-course-1141-9"
 version = "1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "google-genai" },
     { name = "httpx" },

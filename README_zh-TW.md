@@ -74,7 +74,7 @@ SYSTEM_PROMPT=你是一個樂於助人的 AI 助手。
 ```bash
 # 啟動 Discord 機器人
 cd src/
-uv run python -m nano_banana.main
+uv run nano_banana
 ```
 
 ## 使用方式
@@ -97,13 +97,13 @@ uv run python -m nano_banana.main
 cd src/
 
 # 文字生成圖像
-uv run python -m nano_banana.api.demo.demo -p "美麗的日落"
+uv run nano_banana_cli -p "美麗的日落"
 
 # 圖像轉換
-uv run python -m nano_banana.api.demo.demo -p "讓它更鮮豔" -i image.png
+uv run nano_banana_cli -p "讓它更鮮豔" -i image.png
 
 # 多圖像處理
-uv run python -m nano_banana.api.demo.demo -p "結合這些風格" -i img1.png img2.png
+uv run nano_banana_cli -p "結合這些風格" -i img1.png img2.png
 ```
 
 生成的圖像儲存在 `src/nano_banana/api/demo/outputs/`
@@ -134,16 +134,16 @@ nano_banana/
 
 ```bash
 # 安裝開發依賴
-uv sync --extra dev
+uv sync
 
 # 執行所有測試
-pytest
+uv run pytest
 
 # 執行測試並生成覆蓋率報告
-pytest --cov=nano_banana --cov-report=html
+uv run pytest --cov=nano_banana --cov-report=html
 
 # 執行特定測試
-pytest tests/api/test_client.py
+uv run pytest tests/api/test_client.py
 ```
 
 測試覆蓋範圍：
@@ -158,10 +158,10 @@ pytest tests/api/test_client.py
 
 ```bash
 # 格式化程式碼
-ruff format .
+uv run ruff format .
 
 # 執行 linter
-ruff check . --fix
+uv run ruff check . --fix
 ```
 
 ### 專案配置

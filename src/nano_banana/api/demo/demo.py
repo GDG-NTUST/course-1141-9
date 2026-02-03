@@ -62,7 +62,7 @@ def mock_image_path(output_dir: Path, suffix: str = 'png') -> Path:
     return output_dir / f'nano-banana-{uuid.uuid4().hex}.{suffix}'
 
 
-async def main() -> None:
+async def amain() -> None:
     args = parser.parse_args()
     settings = Settings()
     logger = logging.getLogger(__name__)
@@ -111,5 +111,5 @@ async def main() -> None:
         resp_image.show()
 
 
-if __name__ == '__main__':
-    asyncio.run(main())
+def main() -> None:
+    asyncio.run(amain())

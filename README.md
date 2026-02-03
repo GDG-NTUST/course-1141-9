@@ -74,7 +74,7 @@ SYSTEM_PROMPT=You are a helpful AI assistant.
 ```bash
 # Start the Discord bot
 cd src/
-uv run python -m nano_banana.main
+uv run nano_banana
 ```
 
 ## Usage
@@ -97,13 +97,13 @@ uv run python -m nano_banana.main
 cd src/
 
 # Text-to-Image
-uv run python -m nano_banana.api.demo.demo -p "beautiful sunset"
+uv run nano_banana_cli -p "beautiful sunset"
 
 # Image Transformation
-uv run python -m nano_banana.api.demo.demo -p "make it more vibrant" -i image.png
+uv run nano_banana_cli -p "make it more vibrant" -i image.png
 
 # Multiple Images
-uv run python -m nano_banana.api.demo.demo -p "combine these styles" -i img1.png img2.png
+uv run nano_banana_cli -p "combine these styles" -i img1.png img2.png
 ```
 
 Generated images are saved in `src/nano_banana/api/demo/outputs/`
@@ -134,16 +134,16 @@ nano_banana/
 
 ```bash
 # Install development dependencies
-uv sync --extra dev
+uv sync
 
 # Run all tests
-pytest
+uv run pytest
 
 # Run tests with coverage report
-pytest --cov=nano_banana --cov-report=html
+uv run pytest --cov=nano_banana --cov-report=html
 
 # Run specific tests
-pytest tests/api/test_client.py
+uv run pytest tests/api/test_client.py
 ```
 
 Test Coverage:
@@ -158,10 +158,10 @@ Test Coverage:
 
 ```bash
 # Format code
-ruff format .
+uv run ruff format .
 
 # Run linter
-ruff check . --fix
+uv run ruff check . --fix
 ```
 
 ### Project Configuration

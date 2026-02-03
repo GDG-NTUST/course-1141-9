@@ -11,6 +11,10 @@ dependencies = [
     "httpx>=0.28.1",
 ]
 
+[project.scripts]
+nano_banana = "nano_banana.main:main"
+nano_banana_cli = "nano_banana.api.demo.demo:main"
+
 [dependency-groups]
 dev = [
     "pytest>=9.0.2",
@@ -19,6 +23,9 @@ dev = [
     "pytest-mock>=3.15.1",
     "ruff>=0.14.14",
 ]
+
+[tool.uv]
+package = true
 
 [tool.ruff]
 exclude = ["__init__.py", ".env", ".venv", "*.ipynb"]

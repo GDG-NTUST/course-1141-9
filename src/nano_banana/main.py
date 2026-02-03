@@ -5,6 +5,8 @@
 from nano_banana.core.config import Settings
 from nano_banana.discord.bot import bot
 
-if __name__ == '__main__':
+
+def main() -> None:
+    """Run the Nano Banana application."""
     settings = Settings()
     bot.run(settings.discord_token)
